@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cardiovascular Result</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0f172a, #020617);
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.82);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+            backdrop-filter: blur(14px);
+        }
+
+        .fade {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .pulse-glow {
+            animation: glow 1.5s infinite alternate;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+            }
+
+            to {
+                box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-white p-8">
+
+    <h1 class="text-4xl font-bold text-center text-cyan-400 mb-8 fade">
+        🫀 Cardiovascular Health Result
+    </h1>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Score Card -->
+        <div class="glass pulse-glow rounded-3xl p-8 text-center fade">
+            <h2 class="text-xl text-gray-400 mb-3">Cardiovascular Score</h2>
+            <div id="score" class="text-7xl font-bold text-cyan-300">--</div>
+            <p class="text-gray-400 mt-3">Out of 100</p>
+        </div>
+
+        <!-- Decision Card -->
+        <div class="glass rounded-3xl p-8 text-center fade">
+            <h2 class="text-xl text-gray-400 mb-3">Final Decision</h2>
+            <div id="decision" class="text-5xl font-bold">--</div>
+            <p id="model" class="text-2xl mt-4 text-yellow-400">--</p>
+        </div>
+
+        <!-- Risk Card -->
+        <div class="glass rounded-3xl p-8 text-center fade">
+            <h2 class="text-xl text-gray-400 mb-3">Risk Probability</h2>
+            <div id="risk" class="text-6xl font-bold text-red-400">--%</div>
+        </div>
+
+        <!-- Recovery Stress Card -->
+        <div class="glass rounded-3xl p-8 text-center fade">
+            <h2 class="text-xl text-gray-400 mb-5">Physiological Indicators</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-400">Recovery</p>
+                    <p id="recovery" class="text-4xl font-bold text-green-400">--</p>
+                </div>
+                <div>
+                    <p class="text-gray-400">Stress</p>
+                    <p id="stress" class="text-4xl font-bold text-orange-400">--</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Graph Section -->
+    <div class="max-w-5xl mx-auto mt-8 glass rounded-3xl p-8 fade">
+        <h2 class="text-2xl font-bold text-cyan-400 text-center mb-6">
+            📊 Health Analysis Graph
+        </h2>
+        <canvas id="healthChart"></canvas>
+    </div>
+
+    <div class="text-center mt-8">
+        <button onclick="window.location.href='index.html'"
+            class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
+            ⬅ Back to Predictor
+        </button>
+
+        <button onclick="window.location.href='roadmap.html'"
+            class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
+            📈 View Roadmap
+        </button>
+    </div>
+
+    <script>
+        const result = JSON.parse(localStorage.getItem("healthResult"));
+
+        if (!result) {
+            alert("No result found. Please generate prediction first.");
+            window.location.href = "index.html";
+        }
+
+        const score = result["Health Score"] ?? 0;
+        const risk = result["Risk Probability"] ?? 0;
+        const recovery = result["recovery"] ?? 0;
+        const stress = result["stress"] ?? 0;
+        const decision = result["Final Decision"] ?? "N/A";
+        const model = result["Risk (Model)"] ?? "N/A";
+
+        document.getElementById("score").innerText = score;
+        document.getElementById("risk").innerText = risk + "%";
+        document.getElementById("recovery").innerText = recovery;
+        document.getElementById("stress").innerText = stress;
+        document.getElementById("decision").innerText = decision;
+        document.getElementById("model").innerText = "Risk Model: " + model;
+
+        if (decision === "Healthy") {
+            document.getElementById("decision").classList.add("text-green-400");
+        } else if (decision === "Moderate") {
+            document.getElementById("decision").classList.add("text-yellow-400");
+        } else {
+            document.getElementById("decision").classList.add("text-red-400");
+        }
+
+        new Chart(document.getElementById("healthChart"), {
+            type: "bar",
+            data: {
+                labels: ["Health Score", "Risk Probability", "Recovery", "Stress × 100"],
+                datasets: [{
+                    label: "Cardiovascular Metrics",
+                    data: [score, risk, recovery, stress * 100],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "white"
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "white"
+                        },
+                        grid: {
+                            color: "rgba(255,255,255,0.1)"
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: "white"
+                        },
+                        grid: {
+                            color: "rgba(255,255,255,0.1)"
+                        },
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

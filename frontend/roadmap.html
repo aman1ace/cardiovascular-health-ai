@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Personalized Cardio Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            background: radial-gradient(circle at top, #0f172a, #020617);
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(0, 255, 255, 0.18);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .fade {
+            animation: fadeIn 0.9s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-white p-6">
+
+    <h1 class="text-4xl font-bold text-center text-cyan-400 mb-3 fade">
+        📈 Personalized Cardiovascular Roadmap
+    </h1>
+
+    <p class="text-center text-gray-400 mb-8 fade">
+        Roadmap generated from your cardiovascular score, recovery, stress and risk probability
+    </p>
+
+    <div id="summary" class="max-w-5xl mx-auto glass rounded-3xl p-6 mb-8 fade"></div>
+
+    <div class="glass rounded-3xl p-6 mb-8">
+        <h2 class="text-xl text-cyan-300 mb-3">🧠 AI Explanation</h2>
+        <p id="explanation" class="text-gray-300"></p>
+    </div>
+
+    <div class="glass rounded-3xl p-6 mb-8 text-center">
+        <h2 class="text-2xl text-cyan-300 mb-2">🎯 Your Target</h2>
+        <p id="goalText" class="text-xl text-green-400"></p>
+    </div>
+
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <div class="glass rounded-3xl p-6 fade">
+            <h2 class="text-2xl font-bold text-green-400 mb-4">🗓 1 Month Plan</h2>
+            <div id="oneMonth" class="text-gray-300 space-y-3"></div>
+        </div>
+
+        <div class="glass rounded-3xl p-6 fade">
+            <h2 class="text-2xl font-bold text-yellow-400 mb-4">🗓 3 Month Plan</h2>
+            <div id="threeMonth" class="text-gray-300 space-y-3"></div>
+        </div>
+
+        <div class="glass rounded-3xl p-6 fade">
+            <h2 class="text-2xl font-bold text-red-400 mb-4">🗓 6 Month Plan</h2>
+            <div id="sixMonth" class="text-gray-300 space-y-3"></div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-8">
+        <button onclick="window.location.href='result.html'"
+            class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
+            ⬅ Back to Result
+        </button>
+
+        <button onclick="window.location.href='index.html'"
+            class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
+            🫀 New Prediction
+        </button>
+    </div>
+
+    <script>
+        const result = JSON.parse(localStorage.getItem("healthResult"));
+
+        if (!result) {
+            alert("No prediction result found. Please generate cardiovascular score first.");
+            window.location.href = "index.html";
+        }
+
+        const score = Number(result["Health Score"] ?? 0);
+        const risk = Number(result["Risk Probability"] ?? 0);
+        const decision = result["Final Decision"] ?? "Moderate";
+        const recovery = Number(result["recovery"] ?? 0);
+        const stress = Number(result["stress"] ?? 0);
+        const model = result["Risk (Model)"] ?? "N/A";
+
+        let category = "";
+
+        if (decision === "Healthy" && score >= 65) {
+            category = "healthy";
+        } else if (decision === "Moderate" || (score >= 40 && score < 65)) {
+            category = "moderate";
+        } else {
+            category = "risk";
+        }
+
+        document.getElementById("summary").innerHTML = `
+    <h2 class="text-2xl font-bold text-cyan-300 mb-4">Your Current Health Summary</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-center">
+        <div>
+            <p class="text-gray-400">Score</p>
+            <p class="text-3xl font-bold text-cyan-300">${score}</p>
+        </div>
+
+        <div>
+            <p class="text-gray-400">Risk %</p>
+            <p class="text-3xl font-bold text-red-400">${risk}%</p>
+        </div>
+
+        <div>
+            <p class="text-gray-400">Decision</p>
+            <p class="text-2xl font-bold text-green-400">${decision}</p>
+        </div>
+
+        <div>
+            <p class="text-gray-400">Model</p>
+            <p class="text-2xl font-bold text-yellow-400">${model}</p>
+        </div>
+
+        <div>
+            <p class="text-gray-400">Recovery</p>
+            <p class="text-3xl font-bold text-green-400">${recovery}</p>
+        </div>
+
+        <div>
+            <p class="text-gray-400">Stress</p>
+            <p class="text-3xl font-bold text-orange-400">${stress}</p>
+        </div>
+    </div>
+`;
+
+        function list(items) {
+            return `<ul class="list-disc ml-5 space-y-2">${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
+        }
+
+        if (category === "healthy") {
+
+            document.getElementById("oneMonth").innerHTML = list([
+                "Maintain 30 minutes brisk walking or light cardio at least 5 days per week.",
+                "Keep sleep between 7–8 hours daily.",
+                "Continue monitoring heart rate before and after activity.",
+                "Add breathing exercise or meditation for 5–10 minutes daily.",
+                "Avoid excess sugar, junk food and late-night meals.",
+                `Target: Improve score from ${score} to around ${Math.min(score + 5, 100)}.`
+            ]);
+
+            document.getElementById("threeMonth").innerHTML = list([
+                "Increase cardio duration to 40–45 minutes per day.",
+                "Add light strength training 3 days per week.",
+                "Maintain consistent sleep and hydration routine.",
+                "Track weekly recovery and stress values.",
+                "Improve stamina using cycling, jogging or swimming.",
+                `Target: Reach score around ${Math.min(score + 10, 100)}.`
+            ]);
+
+            document.getElementById("sixMonth").innerHTML = list([
+                "Build long-term endurance with structured cardio training.",
+                "Maintain healthy vegetarian diet with enough protein, fruits and vegetables.",
+                "Keep resting heart rate stable and recovery strong.",
+                "Track monthly progress using the AI system.",
+                "Focus on sustainability rather than extreme exercise.",
+                `Target: Maintain score above ${Math.min(score + 15, 100)}.`
+            ]);
+
+        } else if (category === "moderate") {
+
+            document.getElementById("oneMonth").innerHTML = list([
+                "Start with 20–30 minutes brisk walking daily.",
+                "Sleep at least 7 hours regularly.",
+                "Reduce fried food, sugary drinks and packaged snacks.",
+                "Practice deep breathing for 10 minutes daily.",
+                "Check recovery after exercise and aim to improve it gradually.",
+                `Target: Improve score from ${score} to around ${score + 7}.`
+            ]);
+
+            document.getElementById("threeMonth").innerHTML = list([
+                "Increase walking/jogging to 35–45 minutes for 5 days per week.",
+                "Add basic bodyweight exercises 3 days per week.",
+                "Improve diet with dal, paneer/tofu, sprouts, fruits and vegetables.",
+                "Keep stress below 0.75 if possible.",
+                "Track score every week and compare progress.",
+                `Target: Reach score around ${score + 12}.`
+            ]);
+
+            document.getElementById("sixMonth").innerHTML = list([
+                "Follow a balanced cardio + strength routine.",
+                "Maintain healthy sleep, hydration and stress-control habits.",
+                "Use weekly health score trend to measure improvement.",
+                "Gradually improve stamina and reduce breathlessness.",
+                "Avoid sudden high-intensity workouts without preparation.",
+                `Target: Reach Healthy range above 70–80.`
+            ]);
+
+        } else {
+
+            document.getElementById("oneMonth").innerHTML = list([
+                "Start with low-intensity walking for 15–20 minutes daily.",
+                "Avoid intense workouts in the beginning.",
+                "Sleep minimum 7 hours and fix sleep timing.",
+                "Reduce caffeine, junk food, excess salt and sugar.",
+                "Practice slow breathing and relaxation daily.",
+                "Monitor heart rate carefully during activity."
+            ]);
+
+            document.getElementById("threeMonth").innerHTML = list([
+                "Increase walking gradually to 30 minutes per day.",
+                "Add light stretching and mobility exercises.",
+                "Improve diet with more whole grains, fruits, vegetables and protein.",
+                "Focus on improving recovery value step by step.",
+                "Track risk probability every week.",
+                "Consult a healthcare professional if symptoms or discomfort appear."
+            ]);
+
+            document.getElementById("sixMonth").innerHTML = list([
+                "Move toward moderate cardio after building base fitness.",
+                "Maintain consistent routine instead of sudden heavy workouts.",
+                "Reduce stress through yoga, meditation or breathing practice.",
+                "Keep long-term tracking of score, recovery and stress.",
+                "Aim to move from At Risk to Moderate and then Healthy range.",
+                "Use AI system as a monitoring tool, not as medical diagnosis."
+            ]);
+
+        }
+        document.getElementById("goalText").innerText =
+            `Increase your cardiovascular score from ${score} → ${Math.min(score + 15, 100)} in 6 months`;
+
+        let explanation = "";
+
+        if (stress > 0.8) explanation += "High stress detected. ";
+        if (recovery < 5) explanation += "Low recovery indicates poor cardiovascular response. ";
+        if (score > 65) explanation += "Overall cardiovascular condition is good. ";
+        if (score < 50) explanation += "Health score is low and needs improvement. ";
+
+        document.getElementById("explanation").innerText = explanation;
+    </script>
+
+</body>
+
+</html>
