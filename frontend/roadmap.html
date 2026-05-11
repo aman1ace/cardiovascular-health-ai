@@ -3,29 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Personalized Cardio Roadmap</title>
+    <title>Cardiovascular Roadmap</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         body {
-            background: radial-gradient(circle at top, #0f172a, #020617);
+            background: radial-gradient(circle at top, #111827, #020617);
         }
 
         .glass {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(0, 255, 255, 0.18);
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.12);
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.12);
             backdrop-filter: blur(14px);
         }
 
+        .nav-active {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        }
+
         .fade {
-            animation: fadeIn 0.9s ease-in-out;
+            animation: fadeIn 0.8s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(25px);
+                transform: translateY(18px);
             }
 
             to {
@@ -33,60 +37,158 @@
                 transform: translateY(0);
             }
         }
+
+        .timeline-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 999px;
+            background: #22d3ee;
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.8);
+        }
+
+        .section-title {
+            color: #67e8f9;
+            font-weight: 700;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+
+        .plan-list li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
     </style>
 </head>
 
-<body class="min-h-screen text-white p-6">
+<body class="min-h-screen text-white">
 
-    <h1 class="text-4xl font-bold text-center text-cyan-400 mb-3 fade">
-        📈 Personalized Cardiovascular Roadmap
-    </h1>
+    <div class="flex min-h-screen">
 
-    <p class="text-center text-gray-400 mb-8 fade">
-        Roadmap generated from your cardiovascular score, recovery, stress and risk probability
-    </p>
+        <aside class="w-64 glass p-6 hidden md:flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="text-3xl">💗</div>
+                    <div>
+                        <h2 class="font-bold text-lg">Heart Health</h2>
+                        <p class="text-xs text-gray-400">AI Predictor</p>
+                    </div>
+                </div>
 
-    <div id="summary" class="max-w-5xl mx-auto glass rounded-3xl p-6 mb-8 fade"></div>
+                <nav class="space-y-3 text-sm">
+                    <div class="px-4 py-3 rounded-xl text-gray-300">🏠 Dashboard</div>
+                    <div class="nav-active px-4 py-3 rounded-xl">📋 Health Plan</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">📈 History</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">💡 Health Tips</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">ℹ️ About</div>
+                </nav>
+            </div>
 
-    <div class="glass rounded-3xl p-6 mb-8">
-        <h2 class="text-xl text-cyan-300 mb-3">🧠 AI Explanation</h2>
-        <p id="explanation" class="text-gray-300"></p>
-    </div>
+            <button onclick="window.location.href='index.html'"
+                class="bg-indigo-600 hover:bg-indigo-500 px-4 py-3 rounded-xl font-semibold">
+                New Prediction
+            </button>
+        </aside>
 
-    <div class="glass rounded-3xl p-6 mb-8 text-center">
-        <h2 class="text-2xl text-cyan-300 mb-2">🎯 Your Target</h2>
-        <p id="goalText" class="text-xl text-green-400"></p>
-    </div>
+        <main class="flex-1 p-6 md:p-10 fade">
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            <h1 class="text-3xl font-bold mb-2">Personalized Cardiovascular Roadmap</h1>
+            <p class="text-gray-400 mb-6">A structured 1-month, 3-month and 6-month plan based on your current result.
+            </p>
 
-        <div class="glass rounded-3xl p-6 fade">
-            <h2 class="text-2xl font-bold text-green-400 mb-4">🗓 1 Month Plan</h2>
-            <div id="oneMonth" class="text-gray-300 space-y-3"></div>
-        </div>
+            <div class="glass rounded-2xl p-4 mb-6 text-sm text-yellow-300">
+                ⚠️ This roadmap is generated for wellness guidance and academic project demonstration. It is not a
+                medical diagnosis.
+            </div>
 
-        <div class="glass rounded-3xl p-6 fade">
-            <h2 class="text-2xl font-bold text-yellow-400 mb-4">🗓 3 Month Plan</h2>
-            <div id="threeMonth" class="text-gray-300 space-y-3"></div>
-        </div>
+            <div id="summary" class="glass rounded-3xl p-6 mb-6"></div>
 
-        <div class="glass rounded-3xl p-6 fade">
-            <h2 class="text-2xl font-bold text-red-400 mb-4">🗓 6 Month Plan</h2>
-            <div id="sixMonth" class="text-gray-300 space-y-3"></div>
-        </div>
+            <div class="glass rounded-3xl p-6 mb-6">
+                <h2 class="text-xl font-bold text-cyan-300 mb-4">🧭 Roadmap Timeline</h2>
 
-    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                    <div class="bg-slate-900/70 rounded-2xl p-5 border border-green-500/30">
+                        <div class="timeline-dot mx-auto mb-3"></div>
+                        <h3 class="text-green-400 text-xl font-bold">1 Month</h3>
+                        <p class="text-gray-400 text-sm mt-2">Build consistency and correct habits</p>
+                    </div>
 
-    <div class="text-center mt-8">
-        <button onclick="window.location.href='result.html'"
-            class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
-            ⬅ Back to Result
-        </button>
+                    <div class="bg-slate-900/70 rounded-2xl p-5 border border-yellow-500/30">
+                        <div class="timeline-dot mx-auto mb-3"></div>
+                        <h3 class="text-yellow-400 text-xl font-bold">3 Months</h3>
+                        <p class="text-gray-400 text-sm mt-2">Improve stamina and measurable recovery</p>
+                    </div>
 
-        <button onclick="window.location.href='index.html'"
-            class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
-            🫀 New Prediction
-        </button>
+                    <div class="bg-slate-900/70 rounded-2xl p-5 border border-red-500/30">
+                        <div class="timeline-dot mx-auto mb-3"></div>
+                        <h3 class="text-red-400 text-xl font-bold">6 Months</h3>
+                        <p class="text-gray-400 text-sm mt-2">Maintain long-term cardiovascular fitness</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-6 mb-6">
+                <h2 class="text-xl font-bold text-cyan-300 mb-3">🎯 Personalized Priority Focus</h2>
+                <p id="priorityFocus" class="text-gray-300 leading-relaxed"></p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <div class="glass rounded-3xl overflow-hidden">
+                    <div class="bg-green-600/40 p-5">
+                        <h2 class="text-xl font-bold">🗓 1-Month Plan</h2>
+                        <p class="text-sm text-green-200">Foundation Phase</p>
+                    </div>
+                    <div id="oneMonth" class="p-6 text-gray-300"></div>
+                </div>
+
+                <div class="glass rounded-3xl overflow-hidden">
+                    <div class="bg-yellow-600/40 p-5">
+                        <h2 class="text-xl font-bold">🗓 3-Month Plan</h2>
+                        <p class="text-sm text-yellow-200">Improvement Phase</p>
+                    </div>
+                    <div id="threeMonth" class="p-6 text-gray-300"></div>
+                </div>
+
+                <div class="glass rounded-3xl overflow-hidden">
+                    <div class="bg-red-600/40 p-5">
+                        <h2 class="text-xl font-bold">🗓 6-Month Plan</h2>
+                        <p class="text-sm text-red-200">Maintenance Phase</p>
+                    </div>
+                    <div id="sixMonth" class="p-6 text-gray-300"></div>
+                </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-xl text-cyan-300 mb-3">🧠 AI Explanation</h2>
+                    <p id="explanation" class="text-gray-300 leading-relaxed"></p>
+                </div>
+
+                <div class="glass rounded-3xl p-6">
+                    <h2 class="text-xl text-cyan-300 mb-3">🎯 Your Target</h2>
+                    <p id="goalText" class="text-green-400 text-lg font-semibold leading-relaxed"></p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button onclick="window.location.href='result.html'"
+                    class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
+                    Back to Result
+                </button>
+
+                <button onclick="window.location.href='index.html'"
+                    class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
+                    New Prediction
+                </button>
+
+                <button onclick="downloadRoadmap()"
+                    class="px-6 py-3 rounded-xl bg-green-500 hover:bg-green-400 text-black font-bold ml-3">
+                    📄 Download Roadmap
+                </button>
+            </div>
+
+        </main>
     </div>
 
     <script>
@@ -114,145 +216,292 @@
             category = "risk";
         }
 
+        let decisionColor = "text-yellow-400";
+        if (decision === "Healthy") decisionColor = "text-green-400";
+        if (decision === "At Risk") decisionColor = "text-red-400";
+
         document.getElementById("summary").innerHTML = `
-    <h2 class="text-2xl font-bold text-cyan-300 mb-4">Your Current Health Summary</h2>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-center">
+                <div><p class="text-gray-400">Score</p><p class="text-3xl font-bold text-cyan-300">${score}</p></div>
+                <div><p class="text-gray-400">Risk %</p><p class="text-3xl font-bold text-red-400">${risk}%</p></div>
+                <div><p class="text-gray-400">Decision</p><p class="text-2xl font-bold ${decisionColor}">${decision}</p></div>
+                <div><p class="text-gray-400">Model</p><p class="text-2xl font-bold text-yellow-400">${model}</p></div>
+                <div><p class="text-gray-400">Recovery</p><p class="text-3xl font-bold text-green-400">${recovery}</p></div>
+                <div><p class="text-gray-400">Stress</p><p class="text-3xl font-bold text-orange-400">${stress}</p></div>
+            </div>
+        `;
 
-    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 text-center">
-        <div>
-            <p class="text-gray-400">Score</p>
-            <p class="text-3xl font-bold text-cyan-300">${score}</p>
-        </div>
+        function planHTML(exercise, diet, lifestyle, target) {
+            return `
+                <p class="section-title">🏃 Exercise Plan</p>
+                <ul class="plan-list list-disc ml-5">${exercise.map(i => `<li>${i}</li>`).join("")}</ul>
 
-        <div>
-            <p class="text-gray-400">Risk %</p>
-            <p class="text-3xl font-bold text-red-400">${risk}%</p>
-        </div>
+                <p class="section-title">🥗 Diet Plan</p>
+                <ul class="plan-list list-disc ml-5">${diet.map(i => `<li>${i}</li>`).join("")}</ul>
 
-        <div>
-            <p class="text-gray-400">Decision</p>
-            <p class="text-2xl font-bold text-green-400">${decision}</p>
-        </div>
+                <p class="section-title">😴 Sleep & Lifestyle</p>
+                <ul class="plan-list list-disc ml-5">${lifestyle.map(i => `<li>${i}</li>`).join("")}</ul>
 
-        <div>
-            <p class="text-gray-400">Model</p>
-            <p class="text-2xl font-bold text-yellow-400">${model}</p>
-        </div>
-
-        <div>
-            <p class="text-gray-400">Recovery</p>
-            <p class="text-3xl font-bold text-green-400">${recovery}</p>
-        </div>
-
-        <div>
-            <p class="text-gray-400">Stress</p>
-            <p class="text-3xl font-bold text-orange-400">${stress}</p>
-        </div>
-    </div>
-`;
-
-        function list(items) {
-            return `<ul class="list-disc ml-5 space-y-2">${items.map(i => `<li>${i}</li>`).join("")}</ul>`;
+                <p class="section-title">🎯 Target</p>
+                <p class="text-green-300">${target}</p>
+            `;
         }
+
+        let oneMonthText = "";
+        let threeMonthText = "";
+        let sixMonthText = "";
 
         if (category === "healthy") {
 
-            document.getElementById("oneMonth").innerHTML = list([
-                "Maintain 30 minutes brisk walking or light cardio at least 5 days per week.",
-                "Keep sleep between 7–8 hours daily.",
-                "Continue monitoring heart rate before and after activity.",
-                "Add breathing exercise or meditation for 5–10 minutes daily.",
-                "Avoid excess sugar, junk food and late-night meals.",
-                `Target: Improve score from ${score} to around ${Math.min(score + 5, 100)}.`
-            ]);
+            oneMonthText = "Maintain healthy cardiovascular performance and avoid overtraining.";
+            threeMonthText = "Improve stamina gradually while keeping stress controlled.";
+            sixMonthText = "Build a sustainable long-term cardio routine.";
 
-            document.getElementById("threeMonth").innerHTML = list([
-                "Increase cardio duration to 40–45 minutes per day.",
-                "Add light strength training 3 days per week.",
-                "Maintain consistent sleep and hydration routine.",
-                "Track weekly recovery and stress values.",
-                "Improve stamina using cycling, jogging or swimming.",
-                `Target: Reach score around ${Math.min(score + 10, 100)}.`
-            ]);
+            document.getElementById("oneMonth").innerHTML = planHTML(
+                [
+                    "Perform 30 minutes of brisk walking, cycling or jogging for 5 days per week.",
+                    "Add 2 days of light strength training such as squats, push-ups and planks.",
+                    "Keep intensity moderate; avoid unnecessary high-intensity exercise every day."
+                ],
+                [
+                    "Maintain a balanced vegetarian diet with dal, paneer/tofu, sprouts, fruits and vegetables.",
+                    "Include complex carbohydrates such as oats, brown rice or whole wheat roti.",
+                    "Avoid excess sugar, fried snacks and late-night heavy meals."
+                ],
+                [
+                    "Maintain 7–8 hours of sleep daily.",
+                    "Do 5–10 minutes of breathing exercise or meditation.",
+                    "Track recovery once or twice per week."
+                ],
+                `Maintain score above ${score} and try improving it to around ${Math.min(score + 5, 100)}.`
+            );
 
-            document.getElementById("sixMonth").innerHTML = list([
-                "Build long-term endurance with structured cardio training.",
-                "Maintain healthy vegetarian diet with enough protein, fruits and vegetables.",
-                "Keep resting heart rate stable and recovery strong.",
-                "Track monthly progress using the AI system.",
-                "Focus on sustainability rather than extreme exercise.",
-                `Target: Maintain score above ${Math.min(score + 15, 100)}.`
-            ]);
+            document.getElementById("threeMonth").innerHTML = planHTML(
+                [
+                    "Increase cardio duration to 40–45 minutes for 5 days per week.",
+                    "Include one longer low-intensity session on weekends.",
+                    "Add progressive strength training 3 days per week."
+                ],
+                [
+                    "Increase protein intake through dal, soy, paneer/tofu, curd and legumes.",
+                    "Keep hydration consistent throughout the day.",
+                    "Reduce packaged foods and sugary drinks."
+                ],
+                [
+                    "Maintain regular sleep timing.",
+                    "Monitor stress value and keep it below 0.85 during exercise.",
+                    "Use weekly score comparison to track improvement."
+                ],
+                `Reach or maintain a score near ${Math.min(score + 10, 100)}.`
+            );
+
+            document.getElementById("sixMonth").innerHTML = planHTML(
+                [
+                    "Follow a balanced cardio + strength routine long term.",
+                    "Add activities like swimming, cycling or sports for variety.",
+                    "Avoid sudden extreme workouts; focus on consistency."
+                ],
+                [
+                    "Follow a sustainable heart-friendly vegetarian diet.",
+                    "Keep daily fruits, vegetables, whole grains and protein sources.",
+                    "Limit excess salt, sugar and fried foods."
+                ],
+                [
+                    "Maintain monthly cardiovascular tracking.",
+                    "Keep stress management habits consistent.",
+                    "Focus on lifestyle sustainability rather than short-term intensity."
+                ],
+                `Maintain Healthy range and keep score above 75–85.`
+            );
 
         } else if (category === "moderate") {
 
-            document.getElementById("oneMonth").innerHTML = list([
-                "Start with 20–30 minutes brisk walking daily.",
-                "Sleep at least 7 hours regularly.",
-                "Reduce fried food, sugary drinks and packaged snacks.",
-                "Practice deep breathing for 10 minutes daily.",
-                "Check recovery after exercise and aim to improve it gradually.",
-                `Target: Improve score from ${score} to around ${score + 7}.`
-            ]);
+            oneMonthText = "Improve recovery, sleep routine and basic cardio consistency.";
+            threeMonthText = "Move from moderate zone toward healthy range.";
+            sixMonthText = "Build long-term habits to keep risk probability low.";
 
-            document.getElementById("threeMonth").innerHTML = list([
-                "Increase walking/jogging to 35–45 minutes for 5 days per week.",
-                "Add basic bodyweight exercises 3 days per week.",
-                "Improve diet with dal, paneer/tofu, sprouts, fruits and vegetables.",
-                "Keep stress below 0.75 if possible.",
-                "Track score every week and compare progress.",
-                `Target: Reach score around ${score + 12}.`
-            ]);
+            document.getElementById("oneMonth").innerHTML = planHTML(
+                [
+                    "Start with 20–30 minutes brisk walking for 5 days per week.",
+                    "Avoid sudden heavy workouts; increase intensity slowly.",
+                    "Do light stretching for 5 minutes before and after exercise."
+                ],
+                [
+                    "Add protein sources like dal, curd, paneer/tofu, sprouts and chana.",
+                    "Reduce fried snacks, cold drinks and excessive sweets.",
+                    "Eat dinner at least 2–3 hours before sleeping."
+                ],
+                [
+                    "Sleep at least 7 hours daily.",
+                    "Practice deep breathing for 10 minutes daily.",
+                    "Measure recovery once weekly after the same exercise routine."
+                ],
+                `Improve score from ${score} to around ${Math.min(score + 7, 100)}.`
+            );
 
-            document.getElementById("sixMonth").innerHTML = list([
-                "Follow a balanced cardio + strength routine.",
-                "Maintain healthy sleep, hydration and stress-control habits.",
-                "Use weekly health score trend to measure improvement.",
-                "Gradually improve stamina and reduce breathlessness.",
-                "Avoid sudden high-intensity workouts without preparation.",
-                `Target: Reach Healthy range above 70–80.`
-            ]);
+            document.getElementById("threeMonth").innerHTML = planHTML(
+                [
+                    "Increase walking/jogging to 35–45 minutes for 5 days per week.",
+                    "Add bodyweight exercises 3 days per week.",
+                    "Try controlled interval training once per week if comfortable."
+                ],
+                [
+                    "Keep meals balanced with vegetables, whole grains and protein.",
+                    "Avoid skipping breakfast if it causes low energy.",
+                    "Maintain daily water intake and reduce packaged food."
+                ],
+                [
+                    "Keep sleep timing consistent.",
+                    "Aim to keep stress below 0.75–0.85 during workouts.",
+                    "Track score weekly and compare progress."
+                ],
+                `Move toward Healthy range, target score around ${Math.min(score + 12, 100)}.`
+            );
+
+            document.getElementById("sixMonth").innerHTML = planHTML(
+                [
+                    "Follow a structured cardio + strength routine.",
+                    "Gradually improve stamina with jogging, cycling or swimming.",
+                    "Maintain 150–180 minutes of moderate exercise weekly."
+                ],
+                [
+                    "Follow a heart-friendly vegetarian diet with controlled oil and sugar.",
+                    "Include fruits, vegetables, nuts and whole grains regularly.",
+                    "Avoid frequent fast food and late-night meals."
+                ],
+                [
+                    "Maintain stress-control habits such as meditation or yoga.",
+                    "Use monthly score, recovery and stress values to measure improvement.",
+                    "Avoid sudden high-intensity workouts without preparation."
+                ],
+                `Reach Healthy range above 70–80 if routine remains consistent.`
+            );
 
         } else {
 
-            document.getElementById("oneMonth").innerHTML = list([
-                "Start with low-intensity walking for 15–20 minutes daily.",
-                "Avoid intense workouts in the beginning.",
-                "Sleep minimum 7 hours and fix sleep timing.",
-                "Reduce caffeine, junk food, excess salt and sugar.",
-                "Practice slow breathing and relaxation daily.",
-                "Monitor heart rate carefully during activity."
-            ]);
+            oneMonthText = "Start safely with low-intensity routine and improve recovery first.";
+            threeMonthText = "Reduce risk probability through gradual activity and better sleep.";
+            sixMonthText = "Move from At Risk toward Moderate and then Healthy range.";
 
-            document.getElementById("threeMonth").innerHTML = list([
-                "Increase walking gradually to 30 minutes per day.",
-                "Add light stretching and mobility exercises.",
-                "Improve diet with more whole grains, fruits, vegetables and protein.",
-                "Focus on improving recovery value step by step.",
-                "Track risk probability every week.",
-                "Consult a healthcare professional if symptoms or discomfort appear."
-            ]);
+            document.getElementById("oneMonth").innerHTML = planHTML(
+                [
+                    "Begin with 15–20 minutes slow walking daily.",
+                    "Avoid high-intensity workouts in the beginning.",
+                    "Stop exercise if dizziness, chest discomfort or severe breathlessness occurs."
+                ],
+                [
+                    "Reduce fried food, excess salt, sugar and processed snacks.",
+                    "Eat simple home-cooked meals with vegetables, dal, curd and whole grains.",
+                    "Avoid heavy late-night meals and excessive caffeine."
+                ],
+                [
+                    "Sleep at least 7 hours and keep a fixed sleep schedule.",
+                    "Practice slow breathing for 5–10 minutes daily.",
+                    "Monitor heart rate carefully during any activity."
+                ],
+                `Reduce immediate risk indicators and improve score from ${score} to around ${Math.min(score + 8, 100)}.`
+            );
 
-            document.getElementById("sixMonth").innerHTML = list([
-                "Move toward moderate cardio after building base fitness.",
-                "Maintain consistent routine instead of sudden heavy workouts.",
-                "Reduce stress through yoga, meditation or breathing practice.",
-                "Keep long-term tracking of score, recovery and stress.",
-                "Aim to move from At Risk to Moderate and then Healthy range.",
-                "Use AI system as a monitoring tool, not as medical diagnosis."
-            ]);
+            document.getElementById("threeMonth").innerHTML = planHTML(
+                [
+                    "Increase walking gradually to 25–30 minutes daily.",
+                    "Add light mobility and stretching exercises.",
+                    "Avoid intense running or heavy workouts until recovery improves."
+                ],
+                [
+                    "Increase intake of fruits, vegetables, dal, sprouts and whole grains.",
+                    "Control sugar, salt and oily food.",
+                    "Keep regular meal timings and hydration."
+                ],
+                [
+                    "Track recovery and risk probability weekly.",
+                    "Use relaxation methods like yoga, breathing or meditation.",
+                    "Consult a healthcare professional if symptoms occur."
+                ],
+                `Move from At Risk to Moderate range by improving recovery and lowering stress.`
+            );
 
+            document.getElementById("sixMonth").innerHTML = planHTML(
+                [
+                    "Move toward moderate cardio after building base fitness.",
+                    "Maintain 150 minutes of moderate activity per week if comfortable.",
+                    "Add light strength exercises gradually."
+                ],
+                [
+                    "Follow a consistent heart-friendly vegetarian diet.",
+                    "Maintain healthy body weight and avoid frequent junk food.",
+                    "Keep protein, fiber and hydration balanced."
+                ],
+                [
+                    "Maintain regular sleep, stress control and monthly tracking.",
+                    "Use the AI system as a monitoring tool, not as diagnosis.",
+                    "Seek professional medical advice if risk remains high."
+                ],
+                `Aim to reach Moderate first, then gradually move toward Healthy range.`
+            );
         }
+
+        document.getElementById("priorityFocus").innerText =
+            `Current priority: ${oneMonthText} In the next phase: ${threeMonthText} Long-term focus: ${sixMonthText}`;
+
         document.getElementById("goalText").innerText =
-            `Increase your cardiovascular score from ${score} → ${Math.min(score + 15, 100)} in 6 months`;
+            `Increase cardiovascular score from ${score} → ${Math.min(score + 15, 100)} in 6 months while reducing risk probability and improving recovery.`;
 
         let explanation = "";
 
-        if (stress > 0.8) explanation += "High stress detected. ";
-        if (recovery < 5) explanation += "Low recovery indicates poor cardiovascular response. ";
-        if (score > 65) explanation += "Overall cardiovascular condition is good. ";
-        if (score < 50) explanation += "Health score is low and needs improvement. ";
+        if (stress > 0.85) explanation += "High stress detected, so controlled exercise intensity is recommended. ";
+        else explanation += "Stress level is currently manageable based on the given input. ";
+
+        if (recovery < 5) explanation += "Recovery is low, so the roadmap focuses on gradual cardio and recovery improvement. ";
+        else explanation += "Recovery value is acceptable and should be maintained or improved further. ";
+
+        if (score >= 65) explanation += "Overall cardiovascular condition is good, so the plan focuses on maintenance and stamina improvement.";
+        else if (score >= 40) explanation += "Overall condition is moderate, so the plan focuses on consistency, sleep and controlled cardio.";
+        else explanation += "Overall score is low, so the plan starts with safe low-intensity activity and lifestyle correction.";
 
         document.getElementById("explanation").innerText = explanation;
+
+        function downloadRoadmap() {
+            const text = `
+PERSONALIZED CARDIOVASCULAR ROADMAP
+
+Health Score: ${score}
+Risk Probability: ${risk}%
+Risk Model: ${model}
+Final Decision: ${decision}
+Recovery: ${recovery}
+Stress: ${stress}
+
+PRIORITY FOCUS:
+${document.getElementById("priorityFocus").innerText}
+
+AI EXPLANATION:
+${document.getElementById("explanation").innerText}
+
+1-MONTH PLAN:
+${document.getElementById("oneMonth").innerText}
+
+3-MONTH PLAN:
+${document.getElementById("threeMonth").innerText}
+
+6-MONTH PLAN:
+${document.getElementById("sixMonth").innerText}
+
+TARGET:
+${document.getElementById("goalText").innerText}
+
+NOTE:
+This roadmap is generated for wellness guidance and academic project demonstration. It is not a medical diagnosis.
+
+Generated On: ${new Date().toLocaleString()}
+`;
+
+            const blob = new Blob([text], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "cardiovascular_roadmap.txt";
+            link.click();
+        }
     </script>
 
 </body>

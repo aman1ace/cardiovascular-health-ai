@@ -4,33 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Cardiovascular Result</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
         body {
-            background: radial-gradient(circle at top, #0f172a, #020617);
+            background: radial-gradient(circle at top, #111827, #020617);
         }
 
         .glass {
-            background: rgba(15, 23, 42, 0.82);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.12);
             backdrop-filter: blur(14px);
         }
 
-        .fade {
-            animation: fadeIn 1s ease-in-out;
+        .nav-active {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
         }
 
-        .pulse-glow {
-            animation: glow 1.5s infinite alternate;
+        .fade {
+            animation: fadeIn 0.8s ease-in-out;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(25px);
+                transform: translateY(18px);
             }
 
             to {
@@ -39,81 +41,163 @@
             }
         }
 
-        @keyframes glow {
-            from {
-                box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-            }
+        .gauge {
+            width: 190px;
+            height: 190px;
+            border-radius: 50%;
+            background: conic-gradient(#22c55e var(--score), rgba(30, 41, 59, 0.9) 0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
 
-            to {
-                box-shadow: 0 0 35px rgba(0, 255, 255, 0.6);
-            }
+        .gauge-inner {
+            width: 135px;
+            height: 135px;
+            border-radius: 50%;
+            background: #020617;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
         }
     </style>
 </head>
 
-<body class="min-h-screen text-white p-8">
+<body class="min-h-screen text-white">
 
-    <h1 class="text-4xl font-bold text-center text-cyan-400 mb-8 fade">
-        🫀 Cardiovascular Health Result
-    </h1>
+    <div class="flex min-h-screen">
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- Score Card -->
-        <div class="glass pulse-glow rounded-3xl p-8 text-center fade">
-            <h2 class="text-xl text-gray-400 mb-3">Cardiovascular Score</h2>
-            <div id="score" class="text-7xl font-bold text-cyan-300">--</div>
-            <p class="text-gray-400 mt-3">Out of 100</p>
-        </div>
-
-        <!-- Decision Card -->
-        <div class="glass rounded-3xl p-8 text-center fade">
-            <h2 class="text-xl text-gray-400 mb-3">Final Decision</h2>
-            <div id="decision" class="text-5xl font-bold">--</div>
-            <p id="model" class="text-2xl mt-4 text-yellow-400">--</p>
-        </div>
-
-        <!-- Risk Card -->
-        <div class="glass rounded-3xl p-8 text-center fade">
-            <h2 class="text-xl text-gray-400 mb-3">Risk Probability</h2>
-            <div id="risk" class="text-6xl font-bold text-red-400">--%</div>
-        </div>
-
-        <!-- Recovery Stress Card -->
-        <div class="glass rounded-3xl p-8 text-center fade">
-            <h2 class="text-xl text-gray-400 mb-5">Physiological Indicators</h2>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <p class="text-gray-400">Recovery</p>
-                    <p id="recovery" class="text-4xl font-bold text-green-400">--</p>
+        <aside class="w-64 glass p-6 hidden md:flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="text-3xl">💗</div>
+                    <div>
+                        <h2 class="font-bold text-lg">Heart Health</h2>
+                        <p class="text-xs text-gray-400">AI Predictor</p>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-gray-400">Stress</p>
-                    <p id="stress" class="text-4xl font-bold text-orange-400">--</p>
+
+                <nav class="space-y-3 text-sm">
+                    <div class="px-4 py-3 rounded-xl text-gray-300">🏠 Dashboard</div>
+                    <div class="nav-active px-4 py-3 rounded-xl">📊 Prediction</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">📈 History</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">💡 Health Tips</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">ℹ️ About</div>
+                </nav>
+            </div>
+
+            <button onclick="window.location.href='index.html'"
+                class="bg-indigo-600 hover:bg-indigo-500 px-4 py-3 rounded-xl font-semibold">
+                ⬅ Back
+            </button>
+        </aside>
+
+        <main class="flex-1 p-6 md:p-10 fade">
+
+            <h1 class="text-3xl font-bold mb-2">Prediction Result</h1>
+            <p class="text-gray-400 mb-8">Here is your cardiovascular health analysis</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+                <div class="glass rounded-3xl p-7 bg-gradient-to-br from-yellow-900/30 to-slate-900">
+                    <p class="text-gray-300">Your Risk Level</p>
+                    <h2 id="decision" class="text-4xl font-bold mt-4">--</h2>
+                    <p id="model" class="text-yellow-300 mt-4 text-lg">--</p>
+                </div>
+
+                <div class="glass rounded-3xl p-7 text-center">
+                    <p class="text-gray-300 mb-4">Health Meter</p>
+                    <div id="gauge" class="gauge" style="--score: 0%;">
+                        <div class="gauge-inner">
+                            <h2 id="score" class="text-4xl font-bold text-cyan-300">--</h2>
+                            <p class="text-gray-400 text-sm">Score</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass rounded-3xl p-7">
+                    <p class="text-gray-300">Risk Probability</p>
+                    <h2 id="risk" class="text-5xl font-bold text-pink-400 mt-4">--%</h2>
+                    <p id="riskText" class="text-sm text-gray-400 mt-4"></p>
+                </div>
+
+            </div>
+
+            <div class="glass rounded-3xl p-7 mb-6">
+                <h2 class="text-xl font-bold mb-5">Heart Rate Analysis</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div class="bg-blue-900/30 p-5 rounded-2xl">
+                        <p class="text-gray-400">Recovery</p>
+                        <h3 id="recovery" class="text-4xl font-bold text-green-400 mt-2">--</h3>
+                    </div>
+
+                    <div class="bg-orange-900/30 p-5 rounded-2xl">
+                        <p class="text-gray-400">Stress</p>
+                        <h3 id="stress" class="text-4xl font-bold text-orange-400 mt-2">--</h3>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+            <div class="glass rounded-3xl p-7 mb-6">
+                <h2 class="text-xl font-bold text-cyan-300 mb-3">🧠 AI Explanation</h2>
+                <p id="explanation" class="text-gray-300 leading-relaxed"></p>
+            </div>
 
-    <!-- Graph Section -->
-    <div class="max-w-5xl mx-auto mt-8 glass rounded-3xl p-8 fade">
-        <h2 class="text-2xl font-bold text-cyan-400 text-center mb-6">
-            📊 Health Analysis Graph
-        </h2>
-        <canvas id="healthChart"></canvas>
-    </div>
+            <div class="glass rounded-3xl p-7 mb-6">
+                <h2 class="text-xl font-bold mb-5">Risk Scale</h2>
 
-    <div class="text-center mt-8">
-        <button onclick="window.location.href='index.html'"
-            class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
-            ⬅ Back to Predictor
-        </button>
+                <div class="w-full h-4 rounded-full overflow-hidden flex">
+                    <div class="bg-green-500 w-1/3"></div>
+                    <div class="bg-yellow-400 w-1/3"></div>
+                    <div class="bg-red-500 w-1/3"></div>
+                </div>
 
-        <button onclick="window.location.href='roadmap.html'"
-            class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
-            📈 View Roadmap
-        </button>
+                <div class="grid grid-cols-3 text-center text-sm mt-3">
+                    <p class="text-green-400">Low Risk<br>0–20%</p>
+                    <p class="text-yellow-400">Moderate<br>20–60%</p>
+                    <p class="text-red-400">High Risk<br>60–100%</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="glass rounded-3xl p-7">
+                    <h2 class="text-xl font-bold text-cyan-300 mb-5">📊 Health Analysis Graph</h2>
+                    <canvas id="healthChart"></canvas>
+                </div>
+
+                <div class="glass rounded-3xl p-7">
+                    <h2 class="text-xl font-bold text-purple-300 mb-5">📈 Prediction History Trend</h2>
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="glass rounded-3xl p-7 mt-6">
+                <h2 class="text-xl font-bold mb-5">Recent Prediction History</h2>
+                <div id="historyTable" class="overflow-x-auto text-sm"></div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button onclick="window.location.href='index.html'"
+                    class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold">
+                    New Prediction
+                </button>
+
+                <button onclick="window.location.href='roadmap.html'"
+                    class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-black font-bold ml-3">
+                    View Health Plan
+                </button>
+
+                <button onclick="downloadReport()"
+                    class="px-6 py-3 rounded-xl bg-green-500 hover:bg-green-400 text-black font-bold ml-3">
+                    📄 Download PDF Report
+                </button>
+            </div>
+
+        </main>
+
     </div>
 
     <script>
@@ -124,10 +208,10 @@
             window.location.href = "index.html";
         }
 
-        const score = result["Health Score"] ?? 0;
-        const risk = result["Risk Probability"] ?? 0;
-        const recovery = result["recovery"] ?? 0;
-        const stress = result["stress"] ?? 0;
+        const score = Number(result["Health Score"] ?? 0);
+        const risk = Number(result["Risk Probability"] ?? 0);
+        const recovery = Number(result["recovery"] ?? 0);
+        const stress = Number(result["stress"] ?? 0);
         const decision = result["Final Decision"] ?? "N/A";
         const model = result["Risk (Model)"] ?? "N/A";
 
@@ -137,55 +221,206 @@
         document.getElementById("stress").innerText = stress;
         document.getElementById("decision").innerText = decision;
         document.getElementById("model").innerText = "Risk Model: " + model;
+        document.getElementById("gauge").style.setProperty("--score", `${score}%`);
 
         if (decision === "Healthy") {
             document.getElementById("decision").classList.add("text-green-400");
+            document.getElementById("riskText").innerText = "Low-risk zone. Maintain your current routine.";
         } else if (decision === "Moderate") {
             document.getElementById("decision").classList.add("text-yellow-400");
+            document.getElementById("riskText").innerText = "Moderate risk. Improve recovery, stress and sleep.";
         } else {
             document.getElementById("decision").classList.add("text-red-400");
+            document.getElementById("riskText").innerText = "High risk. Follow improvement plan carefully.";
         }
 
-        new Chart(document.getElementById("healthChart"), {
+        let explanation = "";
+
+        if (recovery >= 15) {
+            explanation += "Your recovery value is strong, which indicates good cardiovascular response after activity. ";
+        } else if (recovery >= 5) {
+            explanation += "Your recovery is moderate and can be improved with consistent cardio training. ";
+        } else {
+            explanation += "Your recovery is low, which may indicate poor post-exercise heart-rate recovery. ";
+        }
+
+        if (stress > 0.85) {
+            explanation += "Your stress index is high, meaning your heart reached a high percentage of estimated maximum capacity. ";
+        } else if (stress >= 0.7) {
+            explanation += "Your stress index is within a normal exercise range. ";
+        } else {
+            explanation += "Your stress index is low to moderate. ";
+        }
+
+        if (score >= 65) {
+            explanation += "Overall cardiovascular condition appears healthy based on the current inputs.";
+        } else if (score >= 40) {
+            explanation += "Overall condition is moderate and can improve with better sleep, recovery and exercise consistency.";
+        } else {
+            explanation += "Overall condition needs improvement and should be monitored carefully.";
+        }
+
+        document.getElementById("explanation").innerText = explanation;
+
+        const healthChart = new Chart(document.getElementById("healthChart"), {
             type: "bar",
             data: {
                 labels: ["Health Score", "Risk Probability", "Recovery", "Stress × 100"],
                 datasets: [{
                     label: "Cardiovascular Metrics",
                     data: [score, risk, recovery, stress * 100],
-                    borderWidth: 2
+                    borderWidth: 2,
+                    borderRadius: 8
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
-                    legend: {
-                        labels: {
-                            color: "white"
-                        }
-                    }
+                    legend: { labels: { color: "white" } }
                 },
                 scales: {
                     x: {
-                        ticks: {
-                            color: "white"
-                        },
-                        grid: {
-                            color: "rgba(255,255,255,0.1)"
-                        }
+                        ticks: { color: "white" },
+                        grid: { color: "rgba(255,255,255,0.08)" }
                     },
                     y: {
-                        ticks: {
-                            color: "white"
-                        },
-                        grid: {
-                            color: "rgba(255,255,255,0.1)"
-                        },
+                        ticks: { color: "white" },
+                        grid: { color: "rgba(255,255,255,0.08)" },
                         beginAtZero: true
                     }
                 }
             }
         });
+
+        const history = JSON.parse(localStorage.getItem("predictionHistory")) || [];
+        const recentHistory = history.slice(-5);
+
+        if (recentHistory.length > 0) {
+            document.getElementById("historyTable").innerHTML = `
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-cyan-300 border-b border-slate-700">
+                            <th class="p-2">Date</th>
+                            <th class="p-2">Score</th>
+                            <th class="p-2">Risk %</th>
+                            <th class="p-2">Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${recentHistory.map(item => `
+                            <tr class="border-b border-slate-800">
+                                <td class="p-2">${item.date}</td>
+                                <td class="p-2">${item.score}</td>
+                                <td class="p-2">${item.risk}%</td>
+                                <td class="p-2">${item.decision}</td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                </table>
+            `;
+        } else {
+            document.getElementById("historyTable").innerText = "No previous history available.";
+        }
+
+        const trendChart = new Chart(document.getElementById("trendChart"), {
+            type: "line",
+            data: {
+                labels: recentHistory.map((_, i) => `Test ${i + 1}`),
+                datasets: [{
+                    label: "Health Score Trend",
+                    data: recentHistory.map(item => item.score),
+                    borderWidth: 3,
+                    tension: 0.35
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { labels: { color: "white" } }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: "white" },
+                        grid: { color: "rgba(255,255,255,0.08)" }
+                    },
+                    y: {
+                        ticks: { color: "white" },
+                        grid: { color: "rgba(255,255,255,0.08)" },
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+
+        async function downloadReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("Cardiovascular Health Report", 20, 20);
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+
+            let y = 40;
+
+            doc.text(`Health Score: ${score}`, 20, y); y += 10;
+            doc.text(`Risk Probability: ${risk}%`, 20, y); y += 10;
+            doc.text(`Risk Model: ${model}`, 20, y); y += 10;
+            doc.text(`Final Decision: ${decision}`, 20, y); y += 10;
+            doc.text(`Recovery: ${recovery}`, 20, y); y += 10;
+            doc.text(`Stress: ${stress}`, 20, y); y += 15;
+
+            doc.setFont("helvetica", "bold");
+            doc.text("AI Explanation", 20, y);
+            y += 10;
+
+            doc.setFont("helvetica", "normal");
+            const explanationText = document.getElementById("explanation").innerText;
+            const splitText = doc.splitTextToSize(explanationText, 170);
+            doc.text(splitText, 20, y);
+            y += 40;
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Health Analysis Graph", 20, y);
+            y += 10;
+
+            const chartCanvas = document.getElementById("healthChart");
+            const chartImage = chartCanvas.toDataURL("image/png", 1.0);
+            doc.addImage(chartImage, "PNG", 20, y, 170, 80);
+            y += 90;
+
+            if (y > 240) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Prediction History Trend", 20, y);
+            y += 10;
+
+            const trendCanvas = document.getElementById("trendChart");
+            const trendImage = trendCanvas.toDataURL("image/png", 1.0);
+            doc.addImage(trendImage, "PNG", 20, y, 170, 80);
+            y += 95;
+
+            if (y > 260) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFont("helvetica", "italic");
+            doc.setFontSize(10);
+            doc.text("Generated for wellness guidance and academic project demonstration.", 20, y);
+            y += 8;
+            doc.text("This report is not a medical diagnosis.", 20, y);
+            y += 8;
+            doc.text(`Generated On: ${new Date().toLocaleString()}`, 20, y);
+
+            doc.save("cardiovascular_health_report.pdf");
+        }
     </script>
 
 </body>

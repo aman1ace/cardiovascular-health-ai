@@ -8,72 +8,264 @@
 
     <style>
         body {
-            background: radial-gradient(circle at top, #0f172a, #020617);
+            background: radial-gradient(circle at top, #111827, #020617);
         }
 
-        .card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+        .glass {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .nav-active {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+        }
+
+        .fade {
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center text-white">
+<body class="min-h-screen text-white">
 
-    <div class="card w-[430px] p-7 rounded-3xl">
+    <div class="flex min-h-screen">
 
-        <h1 class="text-3xl font-bold text-cyan-400 text-center mb-2">
-            🫀 Cardiovascular AI
-        </h1>
+        <aside class="w-64 glass p-6 hidden md:flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="text-3xl">💗</div>
+                    <div>
+                        <h2 class="font-bold text-lg">Heart Health</h2>
+                        <p class="text-xs text-gray-400">AI Predictor</p>
+                    </div>
+                </div>
 
-        <p class="text-gray-400 text-center mb-6">
-            Enter health data to generate score
-        </p>
+                <nav class="space-y-3 text-sm">
+                    <div class="nav-active px-4 py-3 rounded-xl">🏠 Dashboard</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">📊 Prediction</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">📈 Health Trend</div>
+                    <div class="px-4 py-3 rounded-xl text-gray-300">💡 Roadmap</div>
+                </nav>
+            </div>
 
-        <input id="age" type="number" placeholder="Age"
-            class="w-full mb-3 p-3 rounded-xl bg-gray-900 border border-cyan-700">
+            <div class="text-xs text-gray-400">
+                AI-assisted wellness prototype
+            </div>
+        </aside>
 
-        <input id="before_hr" type="number" placeholder="Resting Heart Rate Before"
-            class="w-full mb-3 p-3 rounded-xl bg-gray-900 border border-cyan-700">
+        <main class="flex-1 p-6 md:p-10 fade">
 
-        <input id="after_hr" type="number" placeholder="Resting Heart Rate After"
-            class="w-full mb-3 p-3 rounded-xl bg-gray-900 border border-cyan-700">
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <h1 class="text-3xl font-bold">Make a New Prediction</h1>
+                    <p class="text-gray-400 mt-1">Enter heart-rate and sleep details to generate cardiovascular score
+                    </p>
+                </div>
 
-        <input id="max_hr" type="number" placeholder="Maximum Heart Rate"
-            class="w-full mb-3 p-3 rounded-xl bg-gray-900 border border-cyan-700">
+                <div class="glass px-5 py-3 rounded-xl text-sm hidden md:block">
+                    🫀 Cardio AI<br>
+                    <span class="text-cyan-300">FastAPI + ML</span>
+                </div>
+            </div>
 
-        <input id="sleep" type="number" step="0.1" placeholder="Sleep Hours"
-            class="w-full mb-5 p-3 rounded-xl bg-gray-900 border border-cyan-700">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        <button onclick="predict()"
-            class="w-full p-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-bold text-lg">
-            🚀 Generate Cardiovascular Score
-        </button>
+                <section class="lg:col-span-2 glass rounded-3xl p-8">
+                    <h2 class="text-xl font-bold mb-6">Heart Rate Details</h2>
 
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input id="age" type="number" placeholder="Age"
+                            class="p-4 rounded-xl bg-slate-900 border border-indigo-700 outline-none focus:border-pink-400">
 
+                        <input id="sleep" type="number" step="0.1" placeholder="Sleep Hours"
+                            class="p-4 rounded-xl bg-slate-900 border border-indigo-700 outline-none focus:border-pink-400">
+
+                        <input id="before_hr" type="number" placeholder="Resting HR Before"
+                            class="p-4 rounded-xl bg-slate-900 border border-indigo-700 outline-none focus:border-pink-400">
+
+                        <input id="after_hr" type="number" placeholder="HR After Recovery"
+                            class="p-4 rounded-xl bg-slate-900 border border-indigo-700 outline-none focus:border-pink-400">
+
+                        <input id="max_hr" type="number" placeholder="Max HR During Exercise"
+                            class="md:col-span-2 p-4 rounded-xl bg-slate-900 border border-indigo-700 outline-none focus:border-pink-400">
+                    </div>
+
+                    <div
+                        class="mt-5 bg-slate-900/80 border border-yellow-500/40 rounded-xl p-4 text-sm text-yellow-300">
+                        <b>Protocol:</b> Before HR after 3–5 min rest • Max HR during exercise • After HR after 60 sec
+                        recovery
+                    </div>
+
+                    <button onclick="predict()"
+                        class="w-full mt-6 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-pink-500 hover:opacity-90 font-bold text-lg">
+                        🔍 Generate Cardiovascular Score
+                    </button>
+
+                    <button onclick="fetchSmartwatchData()"
+                        class="w-full mt-3 py-4 rounded-xl bg-gradient-to-r from-green-500 to-cyan-500 hover:opacity-90 text-black font-bold text-lg">
+                        ⌚ Fetch Watch Data
+                    </button>
+
+                    <p id="status" class="text-center text-yellow-400 mt-4 text-sm"></p>
+                </section>
+
+                <section class="space-y-5">
+                    <div class="glass rounded-3xl p-6">
+                        <p class="text-gray-400">Models Used</p>
+                        <h3 class="text-2xl font-bold text-cyan-300 mt-2">RF + Logistic</h3>
+                        <p class="text-sm text-gray-400 mt-3">Random Forest predicts health score. Logistic Regression
+                            predicts risk probability.</p>
+                    </div>
+
+                    <div class="glass rounded-3xl p-6">
+                        <p class="text-gray-400">Indicators</p>
+                        <div class="mt-4 space-y-3 text-sm">
+                            <p>❤️ Recovery</p>
+                            <p>🔥 Stress Index</p>
+                            <p>😴 Sleep Hours</p>
+                            <p>📊 Risk Probability</p>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
     </div>
 
     <script>
-        async function predict() {
+        function getValue(id) {
+            return document.getElementById(id).value.trim();
+        }
+
+        function showStatus(msg) {
+            document.getElementById("status").innerText = msg;
+        }
+
+        function validateInputs() {
+            const age = getValue("age");
+            const before = getValue("before_hr");
+            const after = getValue("after_hr");
+            const max = getValue("max_hr");
+            const sleep = getValue("sleep");
+
+            if (!age || !before || !after || !max || !sleep) {
+                showStatus("⚠️ Please fill all fields.");
+                return false;
+            }
+
             const data = {
-                age: Number(document.getElementById("age").value),
-                before_hr: Number(document.getElementById("before_hr").value),
-                after_hr: Number(document.getElementById("after_hr").value),
-                max_hr: Number(document.getElementById("max_hr").value),
-                sleep: Number(document.getElementById("sleep").value)
+                age: Number(age),
+                before: Number(before),
+                after: Number(after),
+                max: Number(max),
+                sleep: Number(sleep)
             };
 
-            const response = await fetch("http://127.0.0.1:8000/predict", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+            if (data.age <= 0 || data.before <= 0 || data.after <= 0 || data.max <= 0 || data.sleep <= 0) {
+                showStatus("⚠️ Values must be greater than 0.");
+                return false;
+            }
 
-            const result = await response.json();
+            if (
+                data.before < 40 || data.before > 130 ||
+                data.after < 40 || data.after > 180 ||
+                data.max < 60 || data.max > 220
+            ) {
+                showStatus("⚠️ Enter realistic heart rate values.");
+                return false;
+            }
 
-            localStorage.setItem("healthResult", JSON.stringify(result));
-            window.location.href = "result.html";
+            return true;
+        }
+
+        async function predict() {
+            if (!validateInputs()) return;
+
+            const data = {
+                age: Number(getValue("age")),
+                before_hr: Number(getValue("before_hr")),
+                after_hr: Number(getValue("after_hr")),
+                max_hr: Number(getValue("max_hr")),
+                sleep: Number(getValue("sleep"))
+            };
+
+            showStatus("⏳ Generating prediction...");
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/predict", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    showStatus("❌ Backend error.");
+                    return;
+                }
+
+                const result = await response.json();
+
+                localStorage.setItem("healthResult", JSON.stringify(result));
+
+                let history = JSON.parse(localStorage.getItem("predictionHistory")) || [];
+                history.push({
+                    date: new Date().toLocaleString(),
+                    score: result["Health Score"],
+                    risk: result["Risk Probability"],
+                    decision: result["Final Decision"]
+                });
+                localStorage.setItem("predictionHistory", JSON.stringify(history));
+
+                window.location.href = "result.html";
+
+            } catch (error) {
+                showStatus("❌ Server not running.");
+            }
+        }
+
+        async function fetchSmartwatchData() {
+            showStatus("⌚ Fetching watch data...");
+
+            try {
+                const response = await fetch("http://127.0.0.1:8000/smartwatch-predict");
+
+                if (!response.ok) {
+                    showStatus("❌ Endpoint not found.");
+                    return;
+                }
+
+                const result = await response.json();
+
+                localStorage.setItem("healthResult", JSON.stringify(result));
+
+                let history = JSON.parse(localStorage.getItem("predictionHistory")) || [];
+                history.push({
+                    date: new Date().toLocaleString(),
+                    score: result["Health Score"],
+                    risk: result["Risk Probability"],
+                    decision: result["Final Decision"]
+                });
+                localStorage.setItem("predictionHistory", JSON.stringify(history));
+
+                window.location.href = "result.html";
+
+            } catch (error) {
+                showStatus("❌ Unable to fetch watch data.");
+            }
         }
     </script>
 
